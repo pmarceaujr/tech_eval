@@ -1,5 +1,5 @@
-# Bayesion Technical Evaluation
-This is a repo for the technical evaluation for a Forward Deployed Software Engineer position at Bayesion
+# Job Interview Technical Evaluation
+This is a repo for the technical evaluation for a Forward Deployed Software Engineer position 
 
 The objective is to create a API/Database service that stores data regarding music artist and their albums.
 
