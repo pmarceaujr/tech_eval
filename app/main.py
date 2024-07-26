@@ -52,18 +52,32 @@ def create_album(artist_id: int, payload: schemas.AlbumCreate, db: Session = Dep
 @app.get("/albums/{artist_id}", response_model=list[schemas.Album])
 def get_artist_albums(artist_id: int,  db: Session = Depends(get_db), limit: int = 10, offset: int = 0, release_date: date = None, price: int = None):
     # items = crud.get_itemss_by_user(user_id, db)
-    filters = []
-    if release_date:
-        print("Date")
-        filters.append(models.Album.release_date == release_date)
-    if price:
-        print("Price)")
-        filters.append(models.Album.price == price))
-
-    albums = db.query(models.Album).\
-        filter(models.Album.artist_id == artist_id).\
-        filter(
-            or_(filters)).\
-        limit(limit).offset(offset).all()
+    filter = db.query(models.Album).filter(models.Album.artist_id == artist_id).limit(limit).offset(offset)
+    if release_date and price:
+        print("Date and Price")
+        filter = db.query(models.Album).filter(models.Album.artist_id == artist_id).\
+                    filter(or_(models.Album.release_date == release_date, models.Album.price == price)).\
+                    limit(limit).offset(offset)
+        
+    if release_date and not price:
+        print("Date and No  Price")
+        filter = db.query(models.Album).filter(models.Album.artist_id == artist_id).\
+                    filter(models.Album.release_date == release_date).\
+                    limit(limit).offset(offset)        
+        
+    if not release_date and price:
+        print("No Date and Price")
+        filter = db.query(models.Album).filter(models.Album.artist_id == artist_id).\
+                    filter(models.Album.price == price).\
+                    limit(limit).offset(offset)
+        
+    # albums = db.query(models.Album).\
+    #     filter(models.Album.artist_id == artist_id).\
+    #     filter(
+    #         or_(models.Album.release_date == release_date,
+    #             models.Album.price == price)).\
+    #     limit(limit).offset(offset)
+    albums = filter.all()
     return albums
 
+# db.query(models.Album).filter(models.Album.artist_id == artist_id).filter(or_(models.Album.release_date == release_date,models.Album.price == price)).limit(limit).offset(offset).all()
