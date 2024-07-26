@@ -13,20 +13,20 @@ def welcome():
     return {"message": "Welcome the music project, the server and API are running fine."}
 
 @app.get("/artists/", response_model=list[schemas.Artist])
-def list_artists(db: Session = Depends(get_db)):
-    artists = db.query(models.Artist).all()
+def list_artists(db: Session = Depends(get_db), limit: int = 10):
+    artists = db.query(models.Artist).limit(limit).all()
     return artists
 
 @app.get("/artists_albums/", response_model=list[schemas.ArtistAlbum])
-def list_artists_with_albums(db: Session = Depends(get_db)):
-    artists = db.query(models.Artist).all()
+def list_artists_with_albums(db: Session = Depends(get_db), limit: int = 10):
+    artists = db.query(models.Artist).limit(limit).all()
     return artists
 
 
 
 @app.get("/albums/", response_model=list[schemas.AlbumBase])
-def list_albums(db: Session = Depends(get_db)):
-    albums = db.query(models.Album).all()
+def list_albums(db: Session = Depends(get_db), limit: int = 10):
+    albums = db.query(models.Album).limit(limit).all()
     return albums
 
 
