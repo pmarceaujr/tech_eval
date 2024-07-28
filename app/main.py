@@ -50,7 +50,7 @@ def create_album(artist_id: int, payload: schemas.AlbumCreate, db: Session = Dep
 
 
 @app.get("/albums/{artist_id}", response_model=list[schemas.Album])
-def get_artist_albums(artist_id: int,  db: Session = Depends(get_db), limit: int = 10, offset: int = 0, release_date: date = None, price: int = None):
+def get_artist_albums(artist_id: int,  db: Session = Depends(get_db), limit: int = 10, offset: int = 0, release_date: date = None, price: float = None):
     # items = crud.get_itemss_by_user(user_id, db)
     filter = db.query(models.Album).filter(models.Album.artist_id == artist_id).limit(limit).offset(offset)
     if release_date and price:
@@ -71,12 +71,6 @@ def get_artist_albums(artist_id: int,  db: Session = Depends(get_db), limit: int
                     filter(models.Album.price == price).\
                     limit(limit).offset(offset)
         
-    # albums = db.query(models.Album).\
-    #     filter(models.Album.artist_id == artist_id).\
-    #     filter(
-    #         or_(models.Album.release_date == release_date,
-    #             models.Album.price == price)).\
-    #     limit(limit).offset(offset)
     albums = filter.all()
     return albums
 
