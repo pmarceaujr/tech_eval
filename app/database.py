@@ -8,8 +8,8 @@ Here is the code for a standard connecion to a SLite database using SQLAlchemy.
 '''
 
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+# from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import event
 
 SQLITE_DATABASE_URL = "sqlite:///./bay_music.db"
@@ -19,7 +19,8 @@ engine = create_engine(
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+# Base = declarative_base()
+Base =  declarative_base()
 event.listen(engine, 'connect', lambda c, _: c.execute('pragma foreign_keys=on'))
 
 def get_db():

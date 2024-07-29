@@ -14,16 +14,17 @@ models.Base.metadata.create_all(bind=engine)
 def welcome():
     return {"message": "Welcome the music project, the server and API are running fine."}
 
+
 @app.get("/artists/", response_model=list[schemas.Artist])
 def list_artists(db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
     artists = db.query(models.Artist).limit(limit).offset(offset).all()
     return artists
 
+
 @app.get("/artists_albums/", response_model=list[schemas.ArtistAlbum])
 def list_artists_with_albums(db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
     artists = db.query(models.Artist).limit(limit).offset(offset).all()
     return artists
-
 
 
 @app.get("/albums/", response_model=list[schemas.AlbumBase])
@@ -39,6 +40,7 @@ def create_artist(payload: schemas.ArtistCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(artist)
     return artist
+
 
 @app.post('/artist/{artist_id}/album', status_code=status.HTTP_201_CREATED)
 def create_album(artist_id: int, payload: schemas.AlbumCreate, db: Session = Depends(get_db)):
