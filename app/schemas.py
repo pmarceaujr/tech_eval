@@ -30,8 +30,8 @@ class Album(AlbumBase):
     id: int
     artist_id: int
 
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True
 
 
 class ArtistBase(BaseModel):
@@ -48,5 +48,5 @@ class ArtistAlbum(ArtistBase):
     id: int
     album: list[Album] = []
 
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True
