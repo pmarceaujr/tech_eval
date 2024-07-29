@@ -26,11 +26,22 @@ def list_artists_with_albums(db: Session = Depends(get_db), limit: int = 10, off
     artists = db.query(models.Artist).limit(limit).offset(offset).all()
     return artists
 
+@app.get("/artists_albums_songs/", response_model=list[schemas.ArtistAlbumSongs])
+def list_artists_with_albums_songs(db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
+    artists = db.query(models.Artist).limit(limit).offset(offset).all()
+    return artists
+
 
 @app.get("/albums/", response_model=list[schemas.AlbumBase])
 def list_albums(db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
     albums = db.query(models.Album).limit(limit).offset(offset).all()
     return albums
+
+
+@app.get("/songs/", response_model=list[schemas.SongBase])
+def list_songs(db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
+    songs = db.query(models.Song).limit(limit).offset(offset).all()
+    return songs
 
 
 @app.post('/artist', status_code=status.HTTP_201_CREATED)
@@ -45,6 +56,14 @@ def create_artist(payload: schemas.ArtistCreate, db: Session = Depends(get_db)):
 @app.post('/artist/{artist_id}/album', status_code=status.HTTP_201_CREATED)
 def create_album(artist_id: int, payload: schemas.AlbumCreate, db: Session = Depends(get_db)):
     album = models.Album(**payload.model_dump(), artist_id=artist_id)
+    db.add(album)
+    db.commit()
+    db.refresh(album)
+    return album
+
+@app.post('/album/{album_id}/song', status_code=status.HTTP_201_CREATED)
+def create_song(album_id: int, payload: schemas.SongCreate, db: Session = Depends(get_db)):
+    album = models.Song(**payload.model_dump(), album_id=album_id)
     db.add(album)
     db.commit()
     db.refresh(album)
