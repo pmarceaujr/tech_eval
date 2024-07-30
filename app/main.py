@@ -23,7 +23,7 @@ def welcome():
 
 
 @app.get("/artists/", response_model=list[schemas.Artist])
-def list_artists(db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
+def list_artists(db: Session = Depends(get_db), limit: int = 100, offset: int = 0):
     try:
         artists = db.query(models.Artist).limit(limit).offset(offset).all()
         return artists
@@ -35,7 +35,7 @@ def list_artists(db: Session = Depends(get_db), limit: int = 10, offset: int = 0
 
 
 @app.get("/artists_albums/", response_model=list[schemas.ArtistAlbum])
-def list_artists_with_albums(db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
+def list_artists_with_albums(db: Session = Depends(get_db), limit: int = 100, offset: int = 0):
     try:
         artists = db.query(models.Artist).limit(limit).offset(offset).all()
         return artists
@@ -46,7 +46,7 @@ def list_artists_with_albums(db: Session = Depends(get_db), limit: int = 10, off
         ) from e
 
 @app.get("/artists_albums_songs/", response_model=list[schemas.ArtistAlbumSongs])
-def list_artists_with_albums_songs(db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
+def list_artists_with_albums_songs(db: Session = Depends(get_db), limit: int = 100, offset: int = 0):
     try:
         artists = db.query(models.Artist).limit(limit).offset(offset).all()
         return artists
@@ -58,7 +58,7 @@ def list_artists_with_albums_songs(db: Session = Depends(get_db), limit: int = 1
 
 
 @app.get("/albums/", response_model=list[schemas.AlbumBase])
-def list_albums(db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
+def list_albums(db: Session = Depends(get_db), limit: int = 100, offset: int = 0):
     try:
         albums = db.query(models.Album).limit(limit).offset(offset).all()
         return albums
@@ -70,7 +70,7 @@ def list_albums(db: Session = Depends(get_db), limit: int = 10, offset: int = 0)
 
 
 @app.get("/songs/", response_model=list[schemas.SongBase])
-def list_songs(db: Session = Depends(get_db), limit: int = 10, offset: int = 0):
+def list_songs(db: Session = Depends(get_db), limit: int = 100, offset: int = 0):
     try:
         songs = db.query(models.Song).limit(limit).offset(offset).all()
         return songs
@@ -150,7 +150,7 @@ def create_song(album_id: int, payload: schemas.SongCreate, db: Session = Depend
 
 
 @app.get("/albums/{artist_id}", response_model=list[schemas.Album])
-def get_artist_albums(artist_id: int,  db: Session = Depends(get_db), limit: int = 10, offset: int = 0, release_date: date = None, price: float = None):
+def get_artist_albums(artist_id: int,  db: Session = Depends(get_db), limit: int = 100, offset: int = 0, release_date: date = None, price: float = None):
     # items = crud.get_itemss_by_user(user_id, db)
     try:
         filter = db.query(models.Album).filter(models.Album.artist_id == artist_id).limit(limit).offset(offset)
