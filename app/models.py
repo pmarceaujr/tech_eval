@@ -16,7 +16,7 @@ class Artist(Base):
     __tablename__ = "artist"
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, index=True)
-    genre = Column(String,  index=False)
+    genre = Column(String,  index=False,nullable=False,)
     created_date = Column(TIMESTAMP(timezone=True), nullable=False, server_default=func.now())
     updated_date = Column(TIMESTAMP(timezone=True), default=None, onupdate=func.now())    
     album = relationship("Album", back_populates="artist")
